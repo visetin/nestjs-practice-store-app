@@ -5,7 +5,6 @@ node_modules
 .gitignore
 
 .dockerignore
-docker-compose
-Dockerfile
+Dockerfile*
 
 .env*
