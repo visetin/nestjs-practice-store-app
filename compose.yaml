@@ -7,7 +7,7 @@ services:
     volumes:
       - ./database-admin/pgadmin:/var/lib/pgadmin
     env_file:
-      - .env
+      - ./database-admin/.env
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -22,7 +22,7 @@ services:
     volumes:
       - ./database/pgdata:/var/lib/postgresql/data
     env_file:
-      - .env
+      - ./database/.env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -40,9 +40,9 @@ services:
     depends_on:
       - database
     env_file:
-      - .env
+      - ./api/.env
     ports:
-      - 3000:3000
+      - 8080:8080
     networks:
       - app
     command: npm run start:dev

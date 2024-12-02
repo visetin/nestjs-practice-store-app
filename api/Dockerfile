@@ -11,5 +11,4 @@ COPY package*.json ./
 RUN npm ci --production
 COPY --from=building /app/dist ./dist
 
-EXPOSE 3000
 CMD [ "npm", "run", "start:prod" ]
