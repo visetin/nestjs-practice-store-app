@@ -1,4 +1,4 @@
-#used for development only
+# use it only for development
 
 services:
   database_admin:
@@ -45,7 +45,6 @@ services:
       - 8080:8080
     networks:
       - app
-    command: npm run start:dev
     develop:
       watch:
         - action: sync
