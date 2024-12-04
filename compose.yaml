@@ -1,4 +1,4 @@
-# use it only for development
+# local development
 
 services:
   database_admin:
