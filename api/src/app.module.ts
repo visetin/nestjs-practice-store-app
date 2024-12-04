@@ -1,22 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostgresDBConfigService } from './typeorm-config/typeorm-config.service';
-import { AppController } from './app.controller';
+import { TypeOrmMainOptionsService } from './core/config/typeorm/main-options.service';
 import { AppService } from './app.service';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      cache: true,
     }),
     TypeOrmModule.forRootAsync({
-      useClass: PostgresDBConfigService,
-      inject: [PostgresDBConfigService],
+      useClass: TypeOrmMainOptionsService,
     }),
   ],
+  providers: [TypeOrmMainOptionsService, AppService],
   controllers: [AppController],
-  providers: [AppService, PostgresDBConfigService],
 })
 export class AppModule {}
