@@ -1,18 +1,16 @@
-# local development
-
 services:
   database_admin:
     container_name: pgadmin4
     image: dpage/pgadmin4
     volumes:
-      - ./database-admin/pgadmin:/var/lib/pgadmin
+      - ./pgadmin:/var/lib/pgadmin
     env_file:
-      - ./database-admin/.env
+      - .env
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
-      - 5050:80
+      - ${PGADMIN_PORT}:${PGADMIN_PORT}
     networks:
       app:
 
@@ -20,40 +18,17 @@ services:
     container_name: postgres
     image: postgres:17-alpine
     volumes:
-      - ./database/pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
     env_file:
-      - ./database/.env
+      - .env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     networks:
       - app
-
-  api:
-    container_name: nestjs
-    build:
-      context: ./api
-      dockerfile: Dockerfile.dev
-    depends_on:
-      - database
-    env_file:
-      - ./api/.env
-    ports:
-      - 8080:8080
-    networks:
-      - app
-    develop:
-      watch:
-        - action: sync
-          path: ./api
-          target: /app
-          ignore:
-            - ./api/node_modules
-        - action: rebuild
-          path: ./api/package.json
 
 networks:
   app:

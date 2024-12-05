@@ -1,16 +1,11 @@
-# local development
-
 setup: env-prepare install
 
 env-prepare:
-	cp -n .env.example .env
-	cp -n ./database/.env.example ./database/.env
-	cp -n ./database-admin/.env.example ./database-admin/.env
-	cp -n ./api/.env.example ./api/.env
+	cp -n .env.local.example .env
 
 install:
-	cd ./api && npm ci
-	docker compose build
+	npm ci
 
 start:
-	docker compose up --force-recreate --watch
+	docker compose up --force-recreate -d
+	npm run start:dev
