@@ -5,10 +5,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  const port = configService.get('PORT');
+  const port = configService.getOrThrow('PORT');
 
-  await app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-  });
+  await app.listen(port);
 }
 bootstrap();

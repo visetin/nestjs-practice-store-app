@@ -5,7 +5,7 @@ const dataSourceOptions: DataSourceOptions = {
   ...connectionOptions,
   type: 'postgres',
   synchronize: false,
-  entities: ['src/**/*.entity.ts'],
+  entities: ['src/domain/**/*.entity.ts'],
   migrations: ['src/core/orm/migrations/*.ts'],
   logging: true,
 };
