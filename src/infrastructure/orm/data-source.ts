@@ -1,5 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import connectionOptions from '../database/connection';
+import connectionOptions from './db-connection';
 
 const dataSourceOptions: DataSourceOptions = {
   ...connectionOptions,

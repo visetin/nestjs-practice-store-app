@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import connectionOptions from '../database/connection';
+import connectionOptions from './db-connection';
 
 @Module({
   imports: [
