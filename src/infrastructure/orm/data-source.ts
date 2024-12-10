@@ -1,12 +1,12 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import connectionOptions from '../database/connection';
+import connectionOptions from './db-connection';
 
 const dataSourceOptions: DataSourceOptions = {
   ...connectionOptions,
   type: 'postgres',
   synchronize: false,
   entities: ['src/domain/**/*.entity.ts'],
-  migrations: ['src/core/orm/migrations/*.ts'],
+  migrations: ['src/infrastructure/orm/migrations/*.ts'],
   logging: true,
 };
 
