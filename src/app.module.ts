@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import bdConnectionOptions from './infrastructure/orm/db-connection';
+import dbConnectionOptions from './infrastructure/orm/db-connection';
+import { ShopCatalogModule } from './domain/shop-catalog/shop-catalog.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
-        ...bdConnectionOptions,
+        ...dbConnectionOptions,
         type: 'postgres',
         autoLoadEntities: configService.getOrThrow('ORM_POSTGRES_AUTO_LOAD'),
         synchronize: configService.getOrThrow('ORM_POSTGRES_SYNC'),
@@ -16,6 +17,7 @@ import bdConnectionOptions from './infrastructure/orm/db-connection';
       }),
       inject: [ConfigService],
     }),
+    ShopCatalogModule,
   ],
 })
 export class AppModule {}
