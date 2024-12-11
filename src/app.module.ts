@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import dbConnectionOptions from './infrastructure/orm/db-connection';
+import { dbConnectionOptions } from './infrastructure/config/db-connection';
 import { ShopCatalogModule } from './domain/shop-catalog/shop-catalog.module';
 
 @Module({
