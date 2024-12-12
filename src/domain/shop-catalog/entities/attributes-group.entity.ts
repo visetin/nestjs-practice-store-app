@@ -7,7 +7,7 @@ export class AttributesGroupEntity {
   public id: number;
 
   @Column({ unique: true })
-  public name: string;
+  public title: string;
 
   @OneToMany(
     () => AttributeEntity,

@@ -7,7 +7,7 @@ export class CategoryEntity {
   public id: number;
 
   @Column()
-  public name: string;
+  public title: string;
 
   @OneToMany(
     () => ProductsCategoryEntity,

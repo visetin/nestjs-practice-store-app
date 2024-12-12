@@ -10,6 +10,16 @@ import { OffersAttributeEntity } from './entities/offers-attribute.entity';
 import { ProductEntity } from './entities/product.entity';
 import { ProductsAttributeEntity } from './entities/products-attribute.entity';
 import { ProductsCategoryEntity } from './entities/products-category.entity';
+import { AttributeService } from './services/attribute.service';
+import { AttributesGroupService } from './services/attributes-group.service';
+import { AttributesNameService } from './services/attributes-name.service';
+import { AttributesValueService } from './services/attributes-value.service';
+import { CategoryService } from './services/category.service';
+import { OfferService } from './services/offer.service';
+import { OffersAttributeService } from './services/offers-attribute.service';
+import { ProductService } from './services/product.service';
+import { ProductsAttributeService } from './services/products-attribute.service';
+import { ProductsCategoryService } from './services/products-category.service';
 
 @Module({
   imports: [
@@ -25,6 +35,18 @@ import { ProductsCategoryEntity } from './entities/products-category.entity';
       ProductsAttributeEntity,
       ProductsCategoryEntity,
     ]),
+  ],
+  providers: [
+    AttributeService,
+    AttributesGroupService,
+    AttributesNameService,
+    AttributesValueService,
+    CategoryService,
+    OfferService,
+    OffersAttributeService,
+    ProductService,
+    ProductsAttributeService,
+    ProductsCategoryService,
   ],
 })
 export class ShopCatalogModule {}

@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LimitEntriesInput } from '../../../shared/dto/input/limit-entries';
+import { LimitEntriesInput } from '../../../shared/dto/limit-entries';
 import { AttributesNameEntity } from '../entities/attributes-name.entity';
+import { CreateAttributesNameInput } from '../dto/attribute.dto';
 
 @Injectable()
-export class AttributesNameRepository {
+export class AttributesNameService {
   constructor(
     @InjectRepository(AttributesNameEntity)
     private readonly attributesNameRepository: Repository<AttributesNameEntity>,
   ) {}
 
-  async findAll({
+  public async findAll({
     limit,
     offset,
   }: LimitEntriesInput): Promise<AttributesNameEntity[]> {
@@ -23,13 +24,13 @@ export class AttributesNameRepository {
     return names;
   }
 
-  async create(value: string): Promise<number> {
-    const attributesName = await this.attributesNameRepository.save({ value });
+  public async create(dto: CreateAttributesNameInput): Promise<number> {
+    const attributesName = await this.attributesNameRepository.save(dto);
 
     return attributesName.id;
   }
 
-  async delete(id: number): Promise<void> {
+  public async delete(id: number): Promise<void> {
     await this.attributesNameRepository.delete(id);
   }
 }
