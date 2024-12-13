@@ -12,7 +12,7 @@ export class AttributesGroupEntity {
   @OneToMany(
     () => AttributeEntity,
     (attributeEntity) => attributeEntity.groupId,
-    { cascade: true },
+    { onDelete: 'SET NULL' },
   )
   public attributes: AttributeEntity[];
 }

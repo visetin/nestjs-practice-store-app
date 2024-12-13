@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConnectionOptions } from './infrastructure/config/db-connection';
-import { ShopCatalogModule } from './domain/shop-catalog/module';
+import { ShopModule } from './domain/shop/module';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { ShopCatalogModule } from './domain/shop-catalog/module';
       }),
       inject: [ConfigService],
     }),
-    ShopCatalogModule,
+    ShopModule,
   ],
 })
 export class AppModule {}
