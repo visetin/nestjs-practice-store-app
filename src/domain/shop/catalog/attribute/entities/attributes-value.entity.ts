@@ -15,7 +15,11 @@ export class AttributesValueEntity {
   @Column()
   public title: string;
 
-  @ManyToOne(() => AttributeEntity, (attributeEntity) => attributeEntity.values)
+  @ManyToOne(
+    () => AttributeEntity,
+    (attributeEntity) => attributeEntity.values,
+    { onDelete: 'CASCADE' },
+  )
   @JoinColumn({ name: 'attribute_id' })
   public attributeId: number;
 }

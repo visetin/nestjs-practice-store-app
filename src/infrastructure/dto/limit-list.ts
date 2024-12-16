@@ -1,4 +1,4 @@
-export class LimitEntriesInput {
+export class LimitListInput {
   public limit: number;
   public offset: number;
 }
