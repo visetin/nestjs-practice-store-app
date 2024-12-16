@@ -12,10 +12,10 @@ export class AttributesValueEntity {
   @PrimaryGeneratedColumn({ name: 'attributes_value_id' })
   public id: number;
 
-  @Column({ unique: true })
+  @Column()
   public title: string;
 
-  @ManyToOne(() => AttributeEntity)
+  @ManyToOne(() => AttributeEntity, (attributeEntity) => attributeEntity.values)
   @JoinColumn({ name: 'attribute_id' })
   public attributeId: number;
 }

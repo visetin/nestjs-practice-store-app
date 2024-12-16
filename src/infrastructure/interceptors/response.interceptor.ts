@@ -73,7 +73,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
       statusCode: status,
       path: request.url,
       message: exception.message,
-      result: exception,
+      data: exception,
       timestamp: format(new Date().toISOString(), 'yyyy-MM-dd HH:mm:ss'),
     });
   }
