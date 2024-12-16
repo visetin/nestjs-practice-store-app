@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "npx typeorm",
     "migration:executor": "npx typeorm-ts-node-commonjs -d ./infrastructure/orm/data-source.ts",
-    "migration:generate": "npm run migration:executor -- migration:generate", 
+    "migration:generate": "npm run migration:executor -- migration:generate",
     "migration:create": "npm run typeorm -- migration:create",
     "migration:run": "npm run migration:executor -- migration:run",
     "migration:revert": "npm run migration:executor -- migration:revert"
@@ -31,6 +31,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
+    "date-fns": "^4.1.0",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
