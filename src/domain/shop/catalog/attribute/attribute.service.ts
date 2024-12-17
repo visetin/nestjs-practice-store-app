@@ -3,21 +3,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
   CreateAttributeInput,
-  CreateAttributesValueInput,
   FindAttributesOutput,
   UpdateAttributeInput,
-  UpdateAttributesValueInput,
 } from './attribute.dto';
 import { AttributeEntity } from './entities/attribute.entity';
-import { AttributesValueEntity } from './entities/attributes-value.entity';
+import { AttributesValueRepository } from './attributes-value.repository';
 
 @Injectable()
 export class AttributeService {
   constructor(
     @InjectRepository(AttributeEntity)
     private readonly attributeRepository: Repository<AttributeEntity>,
-    @InjectRepository(AttributesValueEntity)
-    private readonly attributesValueRepository: Repository<AttributesValueEntity>,
+    private readonly attributesValueRepository: AttributesValueRepository,
   ) {}
 
   public async findAll(): Promise<FindAttributesOutput[]> {
@@ -51,7 +48,10 @@ export class AttributeService {
     const newRecordsId = newRecord.id;
 
     for (const valuesDto of valuesDtoList) {
-      await this.createValue({ ...valuesDto, attributeId: newRecordsId });
+      await this.attributesValueRepository.create({
+        ...valuesDto,
+        attributeId: newRecordsId,
+      });
     }
 
     return newRecordsId;
@@ -65,40 +65,29 @@ export class AttributeService {
 
     // todo: add transaction
     await this.attributeRepository.update(attributeId, attributesDto);
+
     for (const valuesDto of valuesDtoList) {
-      if (!valuesDto.title) {
-        await this.deleteValue(valuesDto.id);
+      const shouldCreate = !valuesDto.id && valuesDto.title;
+      const shouldDelete = !valuesDto.title && valuesDto.id;
+
+      if (shouldCreate) {
+        await this.attributesValueRepository.create({
+          ...valuesDto,
+          attributeId,
+        });
         continue;
       }
 
-      if (!valuesDto.id) {
-        await this.createValue({ ...valuesDto, attributeId });
+      if (shouldDelete) {
+        await this.attributesValueRepository.delete(valuesDto.id);
         continue;
       }
 
-      await this.updateValue(valuesDto.id, valuesDto);
+      await this.attributesValueRepository.update(valuesDto.id, valuesDto);
     }
   }
 
   public async delete(id: number): Promise<void> {
     await this.attributeRepository.delete(id);
-  }
-
-  public async createValue(dto: CreateAttributesValueInput): Promise<number> {
-    const newEntity = this.attributesValueRepository.create(dto);
-    const newRecord = await this.attributesValueRepository.save(newEntity);
-
-    return newRecord.id;
-  }
-
-  public async updateValue(
-    id: number,
-    dto: UpdateAttributesValueInput,
-  ): Promise<void> {
-    await this.attributesValueRepository.update(id, dto);
-  }
-
-  public async deleteValue(id: number): Promise<void> {
-    await this.attributesValueRepository.delete(id);
   }
 }
