@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { AttributeEntity } from './attribute.entity';
 
-@Entity('shop_catalog_attributes_value')
+@Entity('products_catalog_attributes_value')
 export class AttributesValueEntity {
   @PrimaryGeneratedColumn({ name: 'attributes_value_id' })
   public id: number;

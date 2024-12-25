@@ -1,10 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('shop_catalog_category')
+@Entity('products_catalog_category')
 export class CategoryEntity {
   @PrimaryGeneratedColumn({ name: 'category_id' })
   public id: number;
 
-  @Column()
+  @Column({ unique: true })
   public title: string;
 }

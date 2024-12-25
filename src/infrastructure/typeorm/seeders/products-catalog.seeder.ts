@@ -1,15 +1,11 @@
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 import { faker } from '@faker-js/faker';
-import { AttributeEntity } from '../../../domain/shop/catalog/attribute/entities/attribute.entity';
-import { AttributesValueEntity } from '../../../domain/shop/catalog/attribute/entities/attributes-value.entity';
-import { CategoryEntity } from '../../../domain/shop/catalog/category/entities/category.entity';
+import { ProductsCatalogAttributeEntity } from '../../../domain/products-catalog/attribute';
+import { ProductsCatalogAttributesValueEntity } from '../../../domain/products-catalog/attribute';
+import { ProductsCatalogCategoryEntity } from '../../../domain/products-catalog/category';
 
-const ATTRIBUTES_COUNT = 6;
-const ATTRIBUTES_VALUES_COUNT = 30;
-const CATEGORIES_COUNT = 4;
-
-export default class ShopCatalogSeeder implements Seeder {
+export default class ProductsCatalogSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager,
@@ -35,12 +31,13 @@ export default class ShopCatalogSeeder implements Seeder {
     dataSource: DataSource,
     factoryManager: SeederFactoryManager,
   ) {
+    const count = 6;
     await dataSource.query(`
-      TRUNCATE TABLE "shop_catalog_attribute" CASCADE;
+      TRUNCATE TABLE "products_catalog_attribute" CASCADE;
     `);
 
-    const recordsFactory = factoryManager.get(AttributeEntity);
-    const recordsList = await recordsFactory.saveMany(ATTRIBUTES_COUNT);
+    const recordsFactory = factoryManager.get(ProductsCatalogAttributeEntity);
+    const recordsList = await recordsFactory.saveMany(count);
 
     return this.mapIds(recordsList);
   }
@@ -52,11 +49,17 @@ export default class ShopCatalogSeeder implements Seeder {
       attributesIds: number[];
     },
   ) {
+    const count = 30;
+
     const { attributesIds } = deps;
-    const recordsFactory = factoryManager.get(AttributesValueEntity);
-    const recordsRepository = dataSource.getRepository(AttributesValueEntity);
+    const recordsFactory = factoryManager.get(
+      ProductsCatalogAttributesValueEntity,
+    );
+    const recordsRepository = dataSource.getRepository(
+      ProductsCatalogAttributesValueEntity,
+    );
     const recordsList = await Promise.all(
-      Array(ATTRIBUTES_VALUES_COUNT)
+      Array(count)
         .fill(null)
         .map(async () => {
           return await recordsFactory.make({
@@ -74,18 +77,23 @@ export default class ShopCatalogSeeder implements Seeder {
     dataSource: DataSource,
     factoryManager: SeederFactoryManager,
   ) {
+    const count = 4;
+
     await dataSource.query(`
-      TRUNCATE TABLE "shop_catalog_category" CASCADE;
+      TRUNCATE TABLE "products_catalog_category" CASCADE;
     `);
 
-    const recordsFactory = factoryManager.get(CategoryEntity);
-    const recordsList = await recordsFactory.saveMany(CATEGORIES_COUNT);
+    const recordsFactory = factoryManager.get(ProductsCatalogCategoryEntity);
+    const recordsList = await recordsFactory.saveMany(count);
 
     return this.mapIds(recordsList);
   }
 
   private mapIds(
-    list: AttributeEntity[] | AttributesValueEntity[] | CategoryEntity[],
+    list:
+      | ProductsCatalogAttributeEntity[]
+      | ProductsCatalogAttributesValueEntity[]
+      | ProductsCatalogCategoryEntity[],
   ) {
     return list.map(({ id }) => {
       return id;

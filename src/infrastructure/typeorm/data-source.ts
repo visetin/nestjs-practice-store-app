@@ -7,7 +7,7 @@ const dataSourceOptions: DataSourceOptions & SeederOptions = {
   type: 'postgres',
   synchronize: false,
   logging: true,
-  entities: ['src/**/*.entity.ts'],
+  entities: ['src/domain/**/*.entity.ts'],
   migrations: ['src/infrastructure/typeorm/migrations/*.ts'],
   seeds: ['src/infrastructure/typeorm/seeders/*.ts'],
   factories: ['src/infrastructure/typeorm/factories/**/*{.ts,.js}'],
