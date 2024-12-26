@@ -1,5 +1,46 @@
-import { ProductsCatalogAttributeServiceDto } from '../../domain/products-catalog/attribute';
+import { IsArray, IsNumber, IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class CreateProductsCatalogAttributeRequest extends ProductsCatalogAttributeServiceDto.CreateInput {}
+class CreateValueSubRequest {
+  @IsString()
+  @ApiProperty()
+  title: string;
+}
 
-export class UpdateProductsCatalogAttributeRequest extends ProductsCatalogAttributeServiceDto.UpdateInput {}
+class UpdateValueSubRequest {
+  @IsNumber()
+  @ApiProperty()
+  id: number;
+
+  @IsString()
+  @ApiPropertyOptional()
+  title?: string;
+}
+
+class DeleteValueSubRequest {
+  @IsNumber()
+  @ApiProperty()
+  id: number;
+}
+
+export class CreateRequest {
+  @IsString()
+  @ApiProperty()
+  title: string;
+
+  @IsArray()
+  @ApiProperty()
+  values: CreateValueSubRequest[];
+}
+
+export class UpdateRequest {
+  @IsString()
+  @ApiPropertyOptional()
+  title: string;
+
+  @IsArray()
+  @ApiPropertyOptional()
+  values: UpdateValueSubRequest[] &
+    CreateValueSubRequest[] &
+    DeleteValueSubRequest[];
+}

@@ -8,8 +8,8 @@ import {
   Body,
 } from '@nestjs/common';
 import {
-  CreateProductsCatalogAttributeRequest,
-  UpdateProductsCatalogAttributeRequest,
+  CreateRequest,
+  UpdateRequest,
 } from './products-catalog-attribute.request';
 import { ProductsCatalogAttributeService } from '../../domain/products-catalog/attribute';
 
@@ -30,17 +30,14 @@ export class ProductsCatalogAttributeController {
   }
 
   @Post()
-  public async create(@Body() dto: CreateProductsCatalogAttributeRequest) {
+  public async create(@Body() dto: CreateRequest) {
     const id = await this.attributeService.create(dto);
 
     return { id };
   }
 
   @Patch(':id')
-  public async update(
-    @Param('id') id: number,
-    @Body() dto: UpdateProductsCatalogAttributeRequest,
-  ) {
+  public async update(@Param('id') id: number, @Body() dto: UpdateRequest) {
     await this.attributeService.update(id, dto);
   }
 

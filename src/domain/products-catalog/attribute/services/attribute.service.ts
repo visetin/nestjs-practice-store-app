@@ -1,7 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AttributesValueRepository } from '../repositories/attributes-value.repository';
 import { AttributeRepository } from '../repositories/attribute.repository';
-import { CreateInput, UpdateInput } from './dto/attribute.dto';
+import {
+  CreateValueInput,
+  UpdateValueInput,
+  CreateInput,
+  FindAllOutput,
+  FindOneOutput,
+  UpdateInput,
+} from './dto/attribute.dto';
 
 @Injectable()
 export class AttributeService {
@@ -10,21 +17,25 @@ export class AttributeService {
     private readonly attributesValueRepository: AttributesValueRepository,
   ) {}
 
-  public async findAll(): Promise<any[]> {
+  private async createValue(dto: CreateValueInput): Promise<number> {
+    return await this.attributesValueRepository.create(dto);
+  }
+
+  private async updateValue(id: number, dto: UpdateValueInput): Promise<void> {
+    await this.attributesValueRepository.update(id, dto);
+  }
+
+  private async deleteValue(id: number): Promise<void> {
+    await this.attributesValueRepository.delete(id);
+  }
+
+  public async findAll(): Promise<FindAllOutput[]> {
     const repoRunner = this.attributeRepository.getRunner();
 
     return await repoRunner.find();
   }
 
-  public async findAllWithValues(): Promise<any[]> {
-    const repoRunner = this.attributeRepository.getRunner();
-
-    return await repoRunner.find({
-      relations: ['values'],
-    });
-  }
-
-  public async findOne(id: number): Promise<any> {
+  public async findOne(id: number): Promise<FindOneOutput> {
     const repoRunner = this.attributeRepository.getRunner();
 
     const record = await repoRunner.findOne({
@@ -42,16 +53,13 @@ export class AttributeService {
   public async create(dto: CreateInput): Promise<number> {
     const { values: valuesDtoList, ...attributeDto } = dto;
 
-    const newAttributeId = await this.attributeRepository.create(attributeDto);
+    const attributeId = await this.attributeRepository.create(attributeDto);
 
     for (const valuesDto of valuesDtoList) {
-      await this.attributesValueRepository.create({
-        ...valuesDto,
-        attributeId: newAttributeId,
-      });
+      await this.createValue({ ...valuesDto, attributeId });
     }
 
-    return newAttributeId;
+    return attributeId;
   }
 
   public async update(attributeId: number, dto: UpdateInput): Promise<void> {
@@ -64,19 +72,16 @@ export class AttributeService {
       const shouldDelete = !valuesDto.title && valuesDto.id;
 
       if (shouldCreate) {
-        await this.attributesValueRepository.create({
-          ...valuesDto,
-          attributeId,
-        });
+        await this.createValue({ ...valuesDto, attributeId });
         continue;
       }
 
       if (shouldDelete) {
-        await this.attributesValueRepository.delete(valuesDto.id);
+        await this.deleteValue(valuesDto.id);
         continue;
       }
 
-      await this.attributesValueRepository.update(valuesDto.id, valuesDto);
+      await this.updateValue(valuesDto.id, valuesDto);
     }
   }
 

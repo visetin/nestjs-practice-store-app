@@ -1,25 +1,17 @@
-import { PartialType } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
 import { AttributesValueEntity } from '../../entities/attributes-value.entity';
 
-export class AttributesValueDto extends AttributesValueEntity {}
+export class AttributesValueEntityDto extends AttributesValueEntity {}
 
 export class CreateAttributesValueInput {
-  @IsString()
   public title: string;
-
-  @IsNumber()
   public attributeId: number;
 }
 
-export class UpdateAttributesValueInput extends PartialType(
-  CreateAttributesValueInput,
-) {
-  @IsNumber()
+export class UpdateAttributesValueInput {
   public id: number;
+  public title?: string;
 }
 
 export class DeleteAttributesValueInput {
-  @IsNumber()
   public id: number;
 }

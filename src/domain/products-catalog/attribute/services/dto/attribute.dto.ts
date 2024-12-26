@@ -1,28 +1,37 @@
-import { IsArray } from 'class-validator';
 import {
+  AttributesValueEntityDto,
   CreateAttributesValueInput,
   UpdateAttributesValueInput,
   DeleteAttributesValueInput,
 } from '../../repositories/dto/attributes-value.dto';
 import {
-  AttributeDto,
   CreateAttributeInput,
   UpdateAttributeInput,
 } from '../../repositories/dto/attribute.dto';
-import { OmitType } from '@nestjs/swagger';
+
+export class CreateValueInput extends CreateAttributesValueInput {}
+
+export class UpdateValueInput extends UpdateAttributesValueInput {}
+
+export class DeleteValueInput extends DeleteAttributesValueInput {}
 
 export class CreateInput extends CreateAttributeInput {
-  @IsArray()
-  public values: Omit<CreateAttributesValueInput, 'attributeId'>[];
+  public values: Omit<CreateValueInput, 'attributeId'>[];
 }
 
-export class FindAllOutput extends OmitType(AttributeDto, ['values']) {}
+export class FindAllOutput {
+  public id: number;
+  public title: string;
+}
 
-export class FindAllWithValuesOutput extends AttributeDto {}
+export class FindOneOutput {
+  public id: number;
+  public title: string;
+  public values: Omit<AttributesValueEntityDto, 'attributeId'>[];
+}
 
 export class UpdateInput extends UpdateAttributeInput {
-  @IsArray()
-  public values: Omit<UpdateAttributesValueInput, 'attributeId'>[] &
-    Omit<CreateAttributesValueInput, 'attributeId'>[] &
-    DeleteAttributesValueInput[];
+  public values: UpdateValueInput[] &
+    Omit<CreateValueInput, 'attributeId'>[] &
+    DeleteValueInput[];
 }

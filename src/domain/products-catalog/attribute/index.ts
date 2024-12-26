@@ -5,5 +5,3 @@ export { AttributeRepository as ProductsCatalogAttributeRepository } from './rep
 export { AttributesValueRepository as ProductsCatalogAttributesValueRepository } from './repositories/attributes-value.repository';
 
 export { AttributeService as ProductsCatalogAttributeService } from './services/attribute.service';
-
-export * as ProductsCatalogAttributeServiceDto from './services/dto/attribute.dto';
